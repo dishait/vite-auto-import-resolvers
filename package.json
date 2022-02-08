@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "name": "node-lib-template",
+  "description": "开箱即用的 node 库模板",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "dev": "esno src/index.ts",
+    "play": "esno demo/index.ts",
+    "test:watch": "vitest --watch",
+    "coverage": "vitest --coverage",
+    "prepublishOnly": "npm run build",
+    "build:watch": "npm run build -- --watch src"
+  },
+  "keywords": [
+    "lib",
+    "tool",
+    "node",
+    "utils"
+  ],
+  "author": "markthree",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^17.0.10",
+    "c8": "^7.11.0",
+    "esno": "^0.14.0",
+    "tsup": "^5.11.11",
+    "typescript": "^4.5.4",
+    "vitest": "^0.1.23"
+  }
+}
