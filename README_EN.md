@@ -88,7 +88,7 @@ export default 100
 
 4. Type configuration
 
-If your project is' ts', your 'tsconfig.json' should have the following configuration 👇
+If your project is `ts`, your `tsconfig.json` should have the following configuration 👇
 
 ```json
 {
@@ -141,8 +141,8 @@ export default defineConfig({
 
 So
 
--  `src/composables', only modules starting with' use 'will be loaded on demand
-- `src/stores`, only modules ending in 'store' will be loaded on demand
+-  `src/composables`, only modules starting with `use` will be loaded on demand
+- `src/stores`, only modules ending in `store` will be loaded on demand
 
 for example 👇
 
@@ -262,7 +262,7 @@ export default defineConfig({
 
 ## Inspire 🐳
 
-The `resolvers` comes from the `issue` discussion of `unplugin auto import` 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
+The `resolvers` comes from the `issue` discussion of `unplugin-auto-import` 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
 
 
 <br />
