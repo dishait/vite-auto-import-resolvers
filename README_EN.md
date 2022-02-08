@@ -1,27 +1,29 @@
 # vite-auto-import-resolvers
 
-[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) 的 `vite resolvers`，主要处理 `vite` 项目本身的 `api` 按需自动引入。
+The vite resolvers of [unplugin-auto-import]((https://github.com/antfu/unplugin-auto-import)) mainly deals with the `API` of the `vite` project itself, which is automatically imported on demand.
+
 
 <br />
 
 
 ## README 🦉
 
-简体中文 | [English](./README_EN.md)
+[简体中文](./README.md) | English
 
 <br />
 <br />
 
-## 动机 🐇
+## Motation 🐇
 
-为了按需自动引入指定目录下模块的 `api`。
+In order to automatically import the `API` of modules in the specified directory on demand.
 
 <br />
 <br />
 
-## 基本使用 🦖
+## Basic Usage 🦖
 
-1. 安装
+1. install
+
 ```shell
 npm i vite-auto-import-resolvers unplugin-auto-imports -D
 
@@ -32,11 +34,11 @@ npm i vite-auto-import-resolvers unplugin-auto-imports -D
 # yarn add vite-auto-import-resolvers unplugin-auto-imports -D
 ```
 
-2. 配置插件
+2. Configure plugins
 
 ```ts
 // vite.config.js
-// 或者 vite.config.ts
+// OR vite.config.ts
 
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
@@ -46,7 +48,7 @@ import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
     resolve: {
-        // 该别名是必需 👇
+        // This alias is required 👇
         alias: {
             '~/': `${resolve(__dirname, 'src')}/`
         }
@@ -62,9 +64,9 @@ export default defineConfig({
     ]
 })
 ```
-3. 之后 `src/composables` 下模块的默认导出将在项目中自动按需引入
+3. After that, the default export of modules under `src/composables` will be automatically imported as needed in the project
 
-例如 👇
+for example 👇
 
 ```ts
 // src/composables/foo.ts
@@ -75,7 +77,7 @@ export default 100
 ```html
 // src/App.vue
 <script setup>
-    console.log(foo) // 输出100，而且是按需自动引入的
+    console.log(foo) // log 100，And it is automatically introduced on demand
 </script>
 
 <template>
@@ -83,27 +85,28 @@ export default 100
 </template>
 ```
 
-4. 类型配置
+4. Type configuration
 
-如果你的项目是 `ts` 的，那么你应该始终在 `tsconfig.json` 中保持以下配置 👇
+If your project is' ts', your 'tsconfig.json' should have the following configuration 👇
 
 ```json
 {
     "compilerOptions": {
-        // 其他配置
+        // other configs
         "baseUrl": ".",
         "paths": {
             "~/*": ["src/*"]
         }
     },
-    // 其他配置
+    // other configs
 }
 ```
 
 <br />
 
-## 进阶 🦕
-### 强制前缀与后缀
+## Advanced 🦕
+
+### Mandatory prefix or mandatory suffix
 
 ```ts
 import { resolve } from 'path'
@@ -114,7 +117,6 @@ import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
     resolve: {
-        // 该别名是必需 👇
         alias: {
             '~/': `${resolve(__dirname, 'src')}/`
         }
@@ -124,10 +126,10 @@ export default defineConfig({
         AutoImports({
             imports: ['vue'],
             resolvers: [
-                dirResolver({ prefix: 'use' }), // 强制前缀为 use
+                dirResolver({ prefix: 'use' }), // prefix use
                 dirResolver({
-                    target: 'stores', // 目标目录，默认为 composables
-                    suffix: 'Store' // 强制后缀为 Store
+                    target: 'stores', // Target directory, The default is composables
+                    suffix: 'Store' // suffix Store
                 })
             ]
         })
@@ -135,12 +137,12 @@ export default defineConfig({
 })
 ```
 
-于是
+So
 
-- `src/composables` 下只有 `use` 开头的模块会被按需加载
-- `src/stores` 下只有 `Store` 结尾的模块会被按需加载
+-  `src/composables', only modules starting with' use 'will be loaded on demand
+- `src/stores`, only modules ending in 'store' will be loaded on demand
 
-例如 👇
+for example 👇
 
 ```ts
 // src/stores/counterStore.ts
@@ -157,7 +159,7 @@ export default () => {
 
 ```html
 <script setup lang="ts">
-    // 这将按需自动引入
+    // This is on demand
     const n = counterStore()
 </script>
 
@@ -169,11 +171,11 @@ export default () => {
 <br />
 <br />
 
-### 其他风格路径别名
+### Other style path aliases
 
-你可能在项目中用其他风格的路径别名，例如 `@`
+You may use other styles of path aliases in your project，for example `@`
 
-那么你可以这样配置 👇
+Then you can configure it like this 👇
 
 ```ts
 import { resolve } from 'path'
@@ -185,7 +187,7 @@ import { dirResolver } from 'vite-auto-import-resolvers'
 export default defineConfig({
     resolve: {
         alias: {
-            // 改变别名
+            // Change alias
            '@/': `${resolve(__dirname, 'src')}/`
         }
     },
@@ -194,32 +196,32 @@ export default defineConfig({
         AutoImports({
             imports: ['vue'],
             resolvers: [
-                dirResolver({ srcAlias: '@' }) // 设置别名，默认为 ~
+                dirResolver({ srcAlias: '@' }) // Set alias, default to~
             ]
         })
     ]
 })
 ```
 
-如果你是 `ts` 的项目，`tsconfig.json` 理所当然也应该改 👇
+If you are a project of `ts`, `tsconfig.json` should be changed 👇
 
 ```json
 {
     "compilerOptions": {
-        // 其他配置
+        // other configs
         "baseUrl": ".",
         "paths": {
             "@/*": ["src/*"]
         }
     },
-    // 其他配置
+    // other configs
 }
 ```
 
 <br />
 <br />
 
-### 包含与排除
+### include or exclude
 
 ```ts
 import { resolve } from 'path'
@@ -241,8 +243,8 @@ export default defineConfig({
             resolvers: [
                 dirResolver({ 
                     prefix: 'use',
-                    include: ['foo'], // 即使 foo 模块不是以 use 开头也会被包含进来
-                    exclude: ['useBar'] // useBar 模块将始终被排除
+                    include: ['foo'], // foo modules are included even if they do not start with use
+                    exclude: ['useBar'] // The useBar module will always be excluded
                 }) 
             ]
         })
@@ -254,22 +256,15 @@ export default defineConfig({
 <br />
 <br />
 
-## 启发 🐳
+## Inspire 🐳
 
-该 `resolvers` 来源于 `unplugin-auto-import` 的 `issue` 讨论 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
+The `resolvers` comes from the `issue` discussion of `unplugin auto import` 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
 
-
-<br />
-<br />
-
-## 更多 🐃
-
-更多项目工程实践可见 👉 [tov-template](https://github.com/dishait/tov-template)
 
 <br />
 <br />
 
-## License 🐸
+## License
 
 Made with markthree
 
