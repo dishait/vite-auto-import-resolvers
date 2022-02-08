@@ -1,62 +1,23 @@
-# node-lib-template
+# vite-auto-import-resolvers
 
-开箱即用的 node 库模板
+`unplugin-auto-imports` 的 `vite resolvers`。
 
 <br />
 
-## features
+## 动机 🐇
 
-- pnpm 的
-- vitest 测试
-- 开箱即用的
-- typescript 的
+为了在项目下按需自动引入 `api`。
 
+<br />
+<br />
+
+## 特性 🦖
+
+项目级的按需自动引入 `api`。
+
+<br />
 <br />
 
 ## Usage
 
-### install
-
-```shell
-pnpm i
-```
-
-### test
-
-```shell
-pnpm test
-
-// or pnpm test:watch
-```
-
-### build
-
-```shell
-pnpm build
-
-// pnpm build:watch
-```
-
-### coverage
-
-```shell
-pnpm coverage
-```
-
-### dev
-
-```shell
-pnpm dev
-```
-
-### publish
-
-```shell
-npm publish
-```
-
-### play
-
-```shell
-pnpm play
-```
+TODO

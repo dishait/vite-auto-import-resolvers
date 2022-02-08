@@ -1,0 +1,24 @@
+{
+  "name": "vue-example",
+  "version": "1.0.0",
+  "description": "vue + vite 的测试例子",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite --open"
+  },
+  "keywords": [
+    "example"
+  ],
+  "author": {
+    "name": "markthree",
+    "email": "1801982702@qq.com",
+    "url": "https://github.com/markthree"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.1.0",
+    "unplugin-auto-import": "^0.5.11",
+    "vite": "^2.7.13",
+    "vue": "^3.2.29",
+    "vite-auto-import-resolvers": "workspace:*"
+  }
+}
