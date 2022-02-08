@@ -23,13 +23,13 @@
 
 1. 安装
 ```shell
-npm i vite-auto-import-resolvers unplugin-auto-imports -D
+npm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 
 # pnpm 👇
-# pnpm i vite-auto-import-resolvers unplugin-auto-imports -D
+# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 
 # yarn 👇
-# yarn add vite-auto-import-resolvers unplugin-auto-imports -D
+# yarn add @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 ```
 
 2. 配置插件
@@ -54,6 +54,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver()
@@ -122,6 +123,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ prefix: 'use' }), // 强制前缀为 use
@@ -192,6 +194,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ srcAlias: '@' }) // 设置别名，默认为 ~
@@ -237,6 +240,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ 

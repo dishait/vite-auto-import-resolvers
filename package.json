@@ -38,8 +38,6 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@types/node": "^17.0.10",
-    "unplugin-auto-import": ">=0.5.11",
     "chokidar": ">=3.5.3"
   },
   "devDependencies": {

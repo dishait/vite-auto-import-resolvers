@@ -25,13 +25,13 @@ In order to automatically import the `API` of modules in the specified directory
 1. install
 
 ```shell
-npm i vite-auto-import-resolvers unplugin-auto-imports -D
+npm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 
 # pnpm 👇
-# pnpm i vite-auto-import-resolvers unplugin-auto-imports -D
+# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 
 # yarn 👇
-# yarn add vite-auto-import-resolvers unplugin-auto-imports -D
+# yarn add @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 ```
 
 2. Configure plugins
@@ -56,6 +56,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver()
@@ -124,6 +125,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ prefix: 'use' }), // prefix use
@@ -194,6 +196,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ srcAlias: '@' }) // Set alias, default to~
@@ -239,6 +242,7 @@ export default defineConfig({
     plugins: [
         Vue(),
         AutoImports({
+            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ 
