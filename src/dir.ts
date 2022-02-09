@@ -15,7 +15,7 @@ const genModules = (options: IGenModulesOptions) => {
 
 	const modules = new Set<string>(include)
 
-	const watcher = watch(path)
+	const watcher = watch(path, { depth: 1 })
 	watcher.on('add', path => {
 		const moduleName = basename(path, extname(path))
 
@@ -46,7 +46,6 @@ const genModules = (options: IGenModulesOptions) => {
 
 interface Options {
 	target?: string
-	srcAlias?: string
 	prefix?: string
 	suffix?: string
 	include?: string[]
@@ -57,7 +56,6 @@ export const dirResolver = (
 	options?: Options
 ): Resolver => {
 	const {
-		srcAlias = '~',
 		target = 'composables',
 		suffix = '',
 		prefix = '',
@@ -74,7 +72,7 @@ export const dirResolver = (
 	})
 	return name => {
 		if (modules.has(name)) {
-			return `${srcAlias}/${target}/${name}`
+			return `/@fs/src/${target}/${name}`
 		}
 	}
 }

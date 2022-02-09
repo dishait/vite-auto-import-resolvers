@@ -23,13 +23,13 @@
 
 1. 安装
 ```shell
-npm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
+npm i vite-auto-import-resolvers unplugin-auto-imports -D
 
 # pnpm 👇
-# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
+# pnpm i vite-auto-import-resolvers unplugin-auto-imports -D
 
 # yarn 👇
-# yarn add @types/node vite-auto-import-resolvers unplugin-auto-imports -D
+# yarn add vite-auto-import-resolvers unplugin-auto-imports -D
 ```
 
 2. 配置插件
@@ -38,23 +38,15 @@ npm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 // vite.config.js
 // 或者 vite.config.ts
 
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        // 该别名是必需 👇
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         AutoImports({
-            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver()
@@ -63,6 +55,7 @@ export default defineConfig({
     ]
 })
 ```
+
 3. 之后 `src/composables` 下模块的默认导出将在项目中自动按需引入
 
 例如 👇
@@ -94,7 +87,7 @@ export default 100
         // 其他配置
         "baseUrl": ".",
         "paths": {
-            "~/*": ["src/*"]
+            "/@fs/src/*": ["src/*"]
         }
     },
     // 其他配置
@@ -107,23 +100,15 @@ export default 100
 ### 强制前缀与后缀
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        // 该别名是必需 👇
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         AutoImports({
-            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ prefix: 'use' }), // 强制前缀为 use
@@ -171,76 +156,18 @@ export default () => {
 <br />
 <br />
 
-### 其他风格路径别名
-
-你可能在项目中用其他风格的路径别名，例如 `@`
-
-那么你可以这样配置 👇
-
-```ts
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver } from 'vite-auto-import-resolvers'
-
-export default defineConfig({
-    resolve: {
-        alias: {
-            // 改变别名
-           '@/': `${resolve(__dirname, 'src')}/`
-        }
-    },
-    plugins: [
-        Vue(),
-        AutoImports({
-            dts: true,
-            imports: ['vue'],
-            resolvers: [
-                dirResolver({ srcAlias: '@' }) // 设置别名，默认为 ~
-            ]
-        })
-    ]
-})
-```
-
-如果你是 `ts` 的项目，`tsconfig.json` 理所当然也应该改 👇
-
-```json
-{
-    "compilerOptions": {
-        // 其他配置
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        }
-    },
-    // 其他配置
-}
-```
-
-<br />
-<br />
-
 ### 包含与排除
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-           '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         AutoImports({
-            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ 

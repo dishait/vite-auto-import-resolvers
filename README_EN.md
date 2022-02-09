@@ -25,13 +25,13 @@ In order to automatically import the `API` of modules in the specified directory
 1. install
 
 ```shell
-npm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
+npm i vite-auto-import-resolvers unplugin-auto-imports -D
 
 # pnpm 👇
-# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
+# pnpm i vite-auto-import-resolvers unplugin-auto-imports -D
 
 # yarn 👇
-# yarn add @types/node vite-auto-import-resolvers unplugin-auto-imports -D
+# yarn add vite-auto-import-resolvers unplugin-auto-imports -D
 ```
 
 2. Configure plugins
@@ -40,23 +40,15 @@ npm i @types/node vite-auto-import-resolvers unplugin-auto-imports -D
 // vite.config.js
 // OR vite.config.ts
 
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        // This alias is required 👇
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         AutoImports({
-            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver()
@@ -96,7 +88,7 @@ If your project is `ts`, your `tsconfig.json` should have the following configur
         // other configs
         "baseUrl": ".",
         "paths": {
-            "~/*": ["src/*"]
+            "/@fs/src/*": ["src/*"]
         }
     },
     // other configs
@@ -110,22 +102,15 @@ If your project is `ts`, your `tsconfig.json` should have the following configur
 ### Mandatory prefix or mandatory suffix
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         AutoImports({
-            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ prefix: 'use' }), // prefix use
@@ -142,7 +127,7 @@ export default defineConfig({
 So
 
 -  `src/composables`, only modules starting with `use` will be loaded on demand
-- `src/stores`, only modules ending in `store` will be loaded on demand
+- `src/stores`, only modules ending in `Store` will be loaded on demand
 
 for example 👇
 
@@ -173,76 +158,18 @@ export default () => {
 <br />
 <br />
 
-### Other style path aliases
-
-You may use other styles of path aliases in your project，for example `@`
-
-Then you can configure it like this 👇
-
-```ts
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver } from 'vite-auto-import-resolvers'
-
-export default defineConfig({
-    resolve: {
-        alias: {
-            // Change alias
-           '@/': `${resolve(__dirname, 'src')}/`
-        }
-    },
-    plugins: [
-        Vue(),
-        AutoImports({
-            dts: true,
-            imports: ['vue'],
-            resolvers: [
-                dirResolver({ srcAlias: '@' }) // Set alias, default to~
-            ]
-        })
-    ]
-})
-```
-
-If you are a project of `ts`, `tsconfig.json` should be changed 👇
-
-```json
-{
-    "compilerOptions": {
-        // other configs
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        }
-    },
-    // other configs
-}
-```
-
-<br />
-<br />
-
 ### include or exclude
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-           '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         AutoImports({
-            dts: true,
             imports: ['vue'],
             resolvers: [
                 dirResolver({ 
