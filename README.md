@@ -23,13 +23,13 @@
 
 1. 安装
 ```shell
-npm i vite-auto-import-resolvers unplugin-auto-imports -D
+npm i vite-auto-import-resolvers unplugin-auto-import -D
 
 # pnpm 👇
-# pnpm i vite-auto-import-resolvers unplugin-auto-imports -D
+# pnpm i vite-auto-import-resolvers unplugin-auto-import -D
 
 # yarn 👇
-# yarn add vite-auto-import-resolvers unplugin-auto-imports -D
+# yarn add vite-auto-import-resolvers unplugin-auto-import -D
 ```
 
 2. 配置插件
