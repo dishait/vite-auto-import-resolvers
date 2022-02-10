@@ -45,6 +45,7 @@ const genModules = (options: IGenModulesOptions) => {
 }
 
 interface Options {
+	srcAlias?: string
 	target?: string
 	prefix?: string
 	suffix?: string
@@ -56,6 +57,7 @@ export const dirResolver = (
 	options?: Options
 ): Resolver => {
 	const {
+		srcAlias = '~',
 		target = 'composables',
 		suffix = '',
 		prefix = '',
@@ -72,7 +74,7 @@ export const dirResolver = (
 	})
 	return name => {
 		if (modules.has(name)) {
-			return `/@fs/src/${target}/${name}`
+			return `${srcAlias}/${target}/${name}`
 		}
 	}
 }

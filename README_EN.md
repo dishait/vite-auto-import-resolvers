@@ -25,13 +25,13 @@ In order to automatically import the `API` of modules in the specified directory
 1. install
 
 ```shell
-npm i vite-auto-import-resolvers unplugin-auto-import -D
+npm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
 
 # pnpm 👇
-# pnpm i vite-auto-import-resolvers unplugin-auto-import -D
+# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
 
 # yarn 👇
-# yarn add vite-auto-import-resolvers unplugin-auto-import -D
+# yarn add @types/node vite-auto-import-resolvers unplugin-auto-import -D
 ```
 
 2. Configure plugins
@@ -39,13 +39,19 @@ npm i vite-auto-import-resolvers unplugin-auto-import -D
 ```ts
 // vite.config.js
 // OR vite.config.ts
-
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
+    resolve: {
+        // This alias is required 👇
+        alias: {
+            '~/': `${resolve(__dirname, 'src')}/`
+        }
+    },
     plugins: [
         Vue(),
         AutoImports({
@@ -88,7 +94,7 @@ If your project is `ts`, your `tsconfig.json` should have the following configur
         // other configs
         "baseUrl": ".",
         "paths": {
-            "/@fs/src/*": ["src/*"]
+            "~/*": ["src/*"]
         }
     },
     // other configs
@@ -102,12 +108,18 @@ If your project is `ts`, your `tsconfig.json` should have the following configur
 ### Mandatory prefix or mandatory suffix
 
 ```ts
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            '~/': `${resolve(__dirname, 'src')}/`
+        }
+    },
     plugins: [
         Vue(),
         AutoImports({
@@ -161,12 +173,18 @@ export default () => {
 ### include or exclude
 
 ```ts
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            '~/': `${resolve(__dirname, 'src')}/`
+        }
+    },
     plugins: [
         Vue(),
         AutoImports({
@@ -183,6 +201,55 @@ export default defineConfig({
 })
 ```
 
+<br />
+<br />
+
+### Other style path aliases
+
+You may use other styles of path aliases in your project，for example `@`
+
+Then you can configure it like this 👇
+
+```ts
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { dirResolver } from 'vite-auto-import-resolvers'
+
+export default defineConfig({
+    resolve: {
+        alias: {
+            // Change alias
+           '@/': `${resolve(__dirname, 'src')}/`
+        }
+    },
+    plugins: [
+        Vue(),
+        AutoImports({
+            imports: ['vue'],
+            resolvers: [
+                dirResolver({ srcAlias: '@' }) // Set alias, default to~
+            ]
+        })
+    ]
+})
+```
+
+If you are a project of `ts`, `tsconfig.json` should be changed 👇
+
+```json
+{
+    "compilerOptions": {
+        // other configs
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        }
+    },
+    // other configs
+}
+```
 
 <br />
 <br />
