@@ -1,6 +1,22 @@
-import { watch } from 'chokidar'
+import fg from 'fast-glob'
+import { Plugin, FSWatcher } from 'vite'
 import { basename, extname } from 'path'
 import type { Resolver } from 'unplugin-auto-import/dist/types'
+
+let watcher: FSWatcher
+let inServer: boolean = false
+
+export const DirResolverHelper = (): Plugin => {
+	return {
+		name: 'vite-auto-import-resolvers:dir-resolver-helper',
+		config(config, { command }) {
+			inServer = command === 'serve'
+		},
+		configureServer(server) {
+			watcher = server.watcher
+		}
+	}
+}
 
 interface IGenModulesOptions {
 	path: string
@@ -10,37 +26,54 @@ interface IGenModulesOptions {
 	exclude: string[]
 }
 
+const getModuleName = (path: string) => {
+	return basename(path, extname(path))
+}
+
 const genModules = (options: IGenModulesOptions) => {
 	const { path, prefix, suffix, include, exclude } = options
 
-	const modules = new Set<string>(include)
+	const existedModulesInInit = fg
+		.sync(`${path}/**/*`)
+		.map(getModuleName)
 
-	const watcher = watch(path, { depth: 1 })
-	watcher.on('add', path => {
-		const moduleName = basename(path, extname(path))
+	const modules = new Set<string>([
+		...include,
+		...existedModulesInInit
+	])
 
-		const hasPrefix = moduleName.startsWith(prefix)
-		const hasSuffix = moduleName.endsWith(suffix)
+	setImmediate(() => {
+		if (inServer) {
+			watcher.add(path)
 
-		const shouldAppend =
-			hasPrefix &&
-			hasSuffix &&
-			!exclude.includes(moduleName)
+			watcher.on('add', path => {
+				const moduleName = getModuleName(path)
 
-		if (shouldAppend) {
-			modules.add(moduleName)
+				const hasPrefix = moduleName.startsWith(prefix)
+				const hasSuffix = moduleName.endsWith(suffix)
+
+				const shouldAppend =
+					hasPrefix &&
+					hasSuffix &&
+					!exclude.includes(moduleName)
+
+				if (shouldAppend) {
+					modules.add(moduleName)
+				}
+			})
+
+			watcher.on('unlink', path => {
+				const moduleName = getModuleName(path)
+				if (include.includes(moduleName)) {
+					return
+				}
+				if (modules.has(moduleName)) {
+					modules.delete(moduleName)
+				}
+			})
 		}
 	})
 
-	watcher.on('unlink', path => {
-		const moduleName = basename(path, extname(path))
-		if (include.includes(moduleName)) {
-			return
-		}
-		if (modules.has(moduleName)) {
-			modules.delete(moduleName)
-		}
-	})
 	return modules
 }
 

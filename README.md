@@ -42,7 +42,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver } from 'vite-auto-import-resolvers'
+import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
     resolve: {
@@ -53,6 +53,8 @@ export default defineConfig({
     },
     plugins: [
         Vue(),
+        // 该辅助插件也是必需的 👇
+        DirResolverHelper(),
         AutoImports({
             imports: ['vue'],
             resolvers: [
@@ -111,7 +113,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver } from 'vite-auto-import-resolvers'
+import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
     resolve: {
@@ -121,6 +123,7 @@ export default defineConfig({
     },
     plugins: [
         Vue(),
+        DirResolverHelper(),
         AutoImports({
             imports: ['vue'],
             resolvers: [
@@ -176,7 +179,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver } from 'vite-auto-import-resolvers'
+import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
     resolve: {
@@ -186,6 +189,7 @@ export default defineConfig({
     },
     plugins: [
         Vue(),
+        DirResolverHelper(),
         AutoImports({
             imports: ['vue'],
             resolvers: [
@@ -214,7 +218,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver } from 'vite-auto-import-resolvers'
+import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
     resolve: {
@@ -225,6 +229,7 @@ export default defineConfig({
     },
     plugins: [
         Vue(),
+        DirResolverHelper(),
         AutoImports({
             imports: ['vue'],
             resolvers: [

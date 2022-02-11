@@ -1,6 +1,7 @@
 <script setup lang="ts">
     console.log(useFoo)
 
+    console.log(useBar)
     const n = counterStore()
 </script>
 

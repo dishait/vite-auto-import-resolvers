@@ -4,7 +4,8 @@
   "description": "vue + vite 的测试例子",
   "main": "index.js",
   "scripts": {
-    "dev": "vite --open"
+    "dev": "vite --open",
+    "build": "vite build"
   },
   "keywords": [
     "example"
