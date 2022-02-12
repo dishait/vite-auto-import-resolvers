@@ -39,7 +39,7 @@
     "url": "https://github.com/markthree"
   },
   "license": "MIT",
-  "peerDependencies": {
+  "dependencies": {
     "fast-glob": "^3.2.11"
   },
   "devDependencies": {
