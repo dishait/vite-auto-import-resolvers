@@ -1,4 +1,4 @@
-import fg from 'fast-glob'
+import { sync } from 'fast-glob'
 import { Plugin, FSWatcher } from 'vite'
 import { basename, extname } from 'path'
 import type { Resolver } from 'unplugin-auto-import/dist/types'
@@ -30,12 +30,14 @@ const getModuleName = (path: string) => {
 	return basename(path, extname(path))
 }
 
+let watched = false
+
 const genModules = (options: IGenModulesOptions) => {
 	const { path, prefix, suffix, include, exclude } = options
 
-	const existedModulesInInit = fg
-		.sync(`${path}/**/*`)
-		.map(getModuleName)
+	const existedModulesInInit = sync(`${path}/**/*`).map(
+		getModuleName
+	)
 
 	const modules = new Set<string>([
 		...include,
@@ -46,31 +48,34 @@ const genModules = (options: IGenModulesOptions) => {
 		if (inServer) {
 			watcher.add(path)
 
-			watcher.on('add', path => {
-				const moduleName = getModuleName(path)
+			if (!watched) {
+				watcher.on('add', path => {
+					const moduleName = getModuleName(path)
+					const hasPrefix = moduleName.startsWith(prefix)
+					const hasSuffix = moduleName.endsWith(suffix)
 
-				const hasPrefix = moduleName.startsWith(prefix)
-				const hasSuffix = moduleName.endsWith(suffix)
+					const shouldAppend =
+						hasPrefix &&
+						hasSuffix &&
+						!exclude.includes(moduleName)
 
-				const shouldAppend =
-					hasPrefix &&
-					hasSuffix &&
-					!exclude.includes(moduleName)
+					if (shouldAppend) {
+						modules.add(moduleName)
+					}
+				})
 
-				if (shouldAppend) {
-					modules.add(moduleName)
-				}
-			})
+				watcher.on('unlink', path => {
+					const moduleName = getModuleName(path)
+					if (include.includes(moduleName)) {
+						return
+					}
+					if (modules.has(moduleName)) {
+						modules.delete(moduleName)
+					}
+				})
 
-			watcher.on('unlink', path => {
-				const moduleName = getModuleName(path)
-				if (include.includes(moduleName)) {
-					return
-				}
-				if (modules.has(moduleName)) {
-					modules.delete(moduleName)
-				}
-			})
+				watched = true
+			}
 		}
 	})
 
