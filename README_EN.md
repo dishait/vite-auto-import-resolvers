@@ -25,13 +25,13 @@ In order to automatically import the `API` of modules in the specified directory
 1. install
 
 ```shell
-npm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
+npm i vite-auto-import-resolvers unplugin-auto-import -D
 
 # pnpm 👇
-# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
+# pnpm i vite-auto-import-resolvers unplugin-auto-import -D
 
 # yarn 👇
-# yarn add @types/node vite-auto-import-resolvers unplugin-auto-import -D
+# yarn add vite-auto-import-resolvers unplugin-auto-import -D
 ```
 
 2. Configure plugins
@@ -39,19 +39,13 @@ npm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
 ```ts
 // vite.config.js
 // OR vite.config.ts
-import { resolve } from 'path'
+
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        // This alias is required 👇
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         // This helper is required 👇
@@ -96,7 +90,7 @@ If your project is `ts`, your `tsconfig.json` should have the following configur
         // other configs
         "baseUrl": ".",
         "paths": {
-            "~/*": ["src/*"]
+            "/src/*": ["src/*"]
         }
     },
     // other configs
@@ -110,18 +104,12 @@ If your project is `ts`, your `tsconfig.json` should have the following configur
 ### Mandatory prefix or mandatory suffix
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         DirResolverHelper(),
@@ -176,18 +164,12 @@ export default () => {
 ### include or exclude
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         DirResolverHelper(),
@@ -234,7 +216,7 @@ export default defineConfig({
         AutoImports({
             imports: ['vue'],
             resolvers: [
-                dirResolver({ srcAlias: '@' }) // Set alias, default to~
+                dirResolver({ srcAlias: '@' }) // Set alias, default to /src/
             ]
         })
     ]

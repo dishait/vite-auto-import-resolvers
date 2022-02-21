@@ -1,4 +1,5 @@
 import { sync } from 'fast-glob'
+import { resolve } from 'path/posix'
 import { Plugin, FSWatcher } from 'vite'
 import { basename, extname } from 'path'
 import type { Resolver } from 'unplugin-auto-import/dist/types'
@@ -94,7 +95,7 @@ export const dirResolver = (
 	options?: Options
 ): Resolver => {
 	const {
-		srcAlias = '~',
+		srcAlias = '/src/',
 		target = 'composables',
 		suffix = '',
 		prefix = '',
@@ -111,7 +112,7 @@ export const dirResolver = (
 	})
 	return name => {
 		if (modules.has(name)) {
-			return `${srcAlias}/${target}/${name}`
+			return resolve(srcAlias, target, name)
 		}
 	}
 }

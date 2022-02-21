@@ -2,7 +2,7 @@
 // We suggest you to commit this file into source control
 declare global {
   const computed: typeof import('vue')['computed']
-  const counterStore: typeof import('~/stores/counterStore')['default']
+  const counterStore: typeof import('/src/stores/counterStore')['default']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
@@ -44,10 +44,10 @@ declare global {
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
-  const useBar: typeof import('~/composables/useBar')['default']
+  const useBar: typeof import('/src/composables/useBar')['default']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
-  const useFoo: typeof import('~/composables/useFoo')['default']
+  const useFoo: typeof import('/src/composables/useFoo')['default']
   const useSlots: typeof import('vue')['useSlots']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']

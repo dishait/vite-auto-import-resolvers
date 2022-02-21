@@ -23,13 +23,13 @@
 
 1. 安装
 ```shell
-npm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
+npm i vite-auto-import-resolvers unplugin-auto-import -D
 
 # pnpm 👇
-# pnpm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
+# pnpm i vite-auto-import-resolvers unplugin-auto-import -D
 
 # yarn 👇
-# yarn add @types/node vite-auto-import-resolvers unplugin-auto-import -D
+# yarn add vite-auto-import-resolvers unplugin-auto-import -D
 ```
 
 2. 配置插件
@@ -38,19 +38,12 @@ npm i @types/node vite-auto-import-resolvers unplugin-auto-import -D
 // vite.config.js
 // 或者 vite.config.ts
 
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        // 该别名是必需的 👇
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         // 该辅助插件也是必需的 👇
@@ -96,7 +89,7 @@ export default 100
         // 其他配置
         "baseUrl": ".",
         "paths": {
-            "~/*": ["src/*"]
+            "/src/*": ["src/*"]
         }
     },
     // 其他配置
@@ -109,18 +102,12 @@ export default 100
 ### 强制前缀与后缀
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         DirResolverHelper(),
@@ -175,18 +162,12 @@ export default () => {
 ### 包含与排除
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            '~/': `${resolve(__dirname, 'src')}/`
-        }
-    },
     plugins: [
         Vue(),
         DirResolverHelper(),
@@ -233,7 +214,7 @@ export default defineConfig({
         AutoImports({
             imports: ['vue'],
             resolvers: [
-                dirResolver({ srcAlias: '@' }) // 设置别名，默认为 ~
+                dirResolver({ srcAlias: '@' }) // 设置别名，默认为 /src/
             ]
         })
     ]

@@ -1,4 +1,3 @@
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
@@ -8,14 +7,8 @@ import {
 } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-	resolve: {
-		alias: {
-			'~/': `${resolve(__dirname, 'src')}/`
-		}
-	},
 	plugins: [
 		Vue(),
-
 		AutoImports({
 			imports: ['vue'],
 			resolvers: [
