@@ -15,7 +15,7 @@ export default defineConfig({
 	},
 	plugins: [
 		Vue(),
-		DirResolverHelper(),
+
 		AutoImports({
 			imports: ['vue'],
 			resolvers: [
@@ -25,6 +25,7 @@ export default defineConfig({
 					suffix: 'Store'
 				})
 			]
-		})
+		}),
+		DirResolverHelper()
 	]
 })

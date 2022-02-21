@@ -9,6 +9,7 @@ let inServer: boolean = false
 export const DirResolverHelper = (): Plugin => {
 	return {
 		name: 'vite-auto-import-resolvers:dir-resolver-helper',
+		enforce: 'pre',
 		config(config, { command }) {
 			inServer = command === 'serve'
 		},
@@ -44,40 +45,38 @@ const genModules = (options: IGenModulesOptions) => {
 		...existedModulesInInit
 	])
 
-	setImmediate(() => {
-		if (inServer) {
-			watcher.add(path)
+	if (inServer) {
+		watcher.add(path)
 
-			if (!watched) {
-				watcher.on('add', path => {
-					const moduleName = getModuleName(path)
-					const hasPrefix = moduleName.startsWith(prefix)
-					const hasSuffix = moduleName.endsWith(suffix)
+		if (!watched) {
+			watcher.on('add', path => {
+				const moduleName = getModuleName(path)
+				const hasPrefix = moduleName.startsWith(prefix)
+				const hasSuffix = moduleName.endsWith(suffix)
 
-					const shouldAppend =
-						hasPrefix &&
-						hasSuffix &&
-						!exclude.includes(moduleName)
+				const shouldAppend =
+					hasPrefix &&
+					hasSuffix &&
+					!exclude.includes(moduleName)
 
-					if (shouldAppend) {
-						modules.add(moduleName)
-					}
-				})
+				if (shouldAppend) {
+					modules.add(moduleName)
+				}
+			})
 
-				watcher.on('unlink', path => {
-					const moduleName = getModuleName(path)
-					if (include.includes(moduleName)) {
-						return
-					}
-					if (modules.has(moduleName)) {
-						modules.delete(moduleName)
-					}
-				})
+			watcher.on('unlink', path => {
+				const moduleName = getModuleName(path)
+				if (include.includes(moduleName)) {
+					return
+				}
+				if (modules.has(moduleName)) {
+					modules.delete(moduleName)
+				}
+			})
 
-				watched = true
-			}
+			watched = true
 		}
-	})
+	}
 
 	return modules
 }
