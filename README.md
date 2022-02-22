@@ -239,6 +239,103 @@ export default defineConfig({
 <br />
 <br />
 
+
+### 自动生成按需 `api` 预设
+
+在使用 `unplugin-auto-imports` 时，需要手动管理 `imports` 👇
+
+```ts
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        AutoImports({
+            imports: ['vue', 'vue-router', 'pinia'] // 手动管理
+        })
+    ]
+})
+```
+
+但有时候你可能需要去变动一些依赖，例如将 `pinia` 换成 `vuex`，这时如果配置未更改就会发生错误。同时如果你设置了未安装的包，这将造成无谓的性能消耗。
+
+所以你能这样 👇
+
+```ts
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { AutoGenerateImports } from "vite-auto-import-resolvers"
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        AutoImports({
+          imports: AutoGenerateImports() // 自动管理，只有对应的包有装时才会自动按需设置预设
+        })
+    ]
+})
+```
+
+<br />
+
+#### 默认支持列表
+
+`include` 属性
+
+- vue
+- pinia
+- vuex
+- vitest
+- vue-i18n
+- vue-router
+- @vueuse/core
+- @vueuse/head
+- @nuxtjs/composition-api
+- preact
+- quasar
+- react
+- react-router
+- react-router-dom
+- svelte
+- svelte/animate
+- svelte/easing
+- svelte/motion
+- svelte/store
+- svelte/transition
+- vitepress
+- vee-validate
+
+<br />
+
+#### 手动排除
+
+当然你可以手动排除掉不想要的 👇
+
+```ts
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { AutoGenerateImports } from "vite-auto-import-resolvers"
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        AutoImports({
+          imports: AutoGenerateImports({
+              exclude: ['pinia'] // pinia 将始终被排除
+          }) 
+        })
+    ]
+})
+```
+
+
+<br />
+<br />
+
 ## 启发 🐳
 
 该 `resolvers` 来源于 `unplugin-auto-import` 的 `issue` 讨论 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。

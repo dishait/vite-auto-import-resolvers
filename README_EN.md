@@ -241,6 +241,99 @@ If you are a project of `ts`, `tsconfig.json` should be changed 👇
 <br />
 <br />
 
+### generate on-demand `API` presets
+
+When using `unplugin auto imports`, you need to manage `imports` manually 👇
+
+```ts
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        AutoImports({
+            imports: ['vue', 'vue-router', 'pinia'] // 手动管理
+        })
+    ]
+})
+```
+
+But sometimes you may need to change some dependencies, such as changing `Pinia` to `vuex`. At this time, if the configuration is not changed, an error will occur. At the same time, if you set an uninstalled package, it will cause unnecessary performance consumption.
+
+So you can 👇
+
+```ts
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { AutoGenerateImports } from "vite-auto-import-resolvers"
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        AutoImports({
+          imports: AutoGenerateImports() // Automatic management. Only when the corresponding package is loaded, the preset will be set automatically on demand
+        })
+    ]
+})
+```
+
+<br />
+
+#### Default support list
+
+`include`
+
+- vue
+- pinia
+- vuex
+- vitest
+- vue-i18n
+- vue-router
+- @vueuse/core
+- @vueuse/head
+- @nuxtjs/composition-api
+- preact
+- quasar
+- react
+- react-router
+- react-router-dom
+- svelte
+- svelte/animate
+- svelte/easing
+- svelte/motion
+- svelte/store
+- svelte/transition
+- vitepress
+- vee-validate
+
+<br />
+
+#### exclude
+
+```ts
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { AutoGenerateImports } from "vite-auto-import-resolvers"
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        AutoImports({
+          imports: AutoGenerateImports({
+              exclude: ['pinia'] // Pinia will always be excluded
+          }) 
+        })
+    ]
+})
+```
+
+<br />
+<br />
+
 ## Inspire 🐳
 
 The `resolvers` comes from the `issue` discussion of `unplugin-auto-import` 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
