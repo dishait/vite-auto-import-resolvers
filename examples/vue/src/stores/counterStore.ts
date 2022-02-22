@@ -1,9 +1,8 @@
-const counter = ref(100)
-
-export default () => {
-	const inc = (v: number = 1) => (counter.value += v)
+export default defineStore('counter', () => {
+	const counter = ref(100)
+	const inc = () => counter.value++
 	return {
 		inc,
 		counter
 	}
-}
+})

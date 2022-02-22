@@ -17,9 +17,10 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.1.0",
+    "pinia": "^2.0.11",
     "unplugin-auto-import": "^0.5.11",
     "vite": "^2.7.13",
-    "vue": "^3.2.29",
-    "vite-auto-import-resolvers": "workspace:*"
+    "vite-auto-import-resolvers": "workspace:*",
+    "vue": "^3.2.29"
   }
 }
