@@ -19,6 +19,7 @@ declare global {
   const inject: typeof import('vue')['inject']
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
+  const kk: typeof import('/src/composables/kk')['default']
   const mapActions: typeof import('pinia')['mapActions']
   const mapGetters: typeof import('pinia')['mapGetters']
   const mapState: typeof import('pinia')['mapState']

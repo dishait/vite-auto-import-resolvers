@@ -32,8 +32,6 @@ const getModuleName = (path: string) => {
 	return basename(path, extname(path))
 }
 
-let watched = false
-
 const genModules = (options: IGenModulesOptions) => {
 	const { path, prefix, suffix, include, exclude } = options
 
@@ -46,40 +44,33 @@ const genModules = (options: IGenModulesOptions) => {
 		...existedModulesInInit
 	])
 
-	setImmediate(() => {
-		if (inServer) {
-			watcher.add(path)
+	if (inServer) {
+		watcher.add(path)
+		watcher.on('add', path => {
+			const moduleName = getModuleName(path)
+			const hasPrefix = moduleName.startsWith(prefix)
+			const hasSuffix = moduleName.endsWith(suffix)
 
-			if (!watched) {
-				watcher.on('add', path => {
-					const moduleName = getModuleName(path)
-					const hasPrefix = moduleName.startsWith(prefix)
-					const hasSuffix = moduleName.endsWith(suffix)
+			const shouldAppend =
+				hasPrefix &&
+				hasSuffix &&
+				!exclude.includes(moduleName)
 
-					const shouldAppend =
-						hasPrefix &&
-						hasSuffix &&
-						!exclude.includes(moduleName)
-
-					if (shouldAppend) {
-						modules.add(moduleName)
-					}
-				})
-
-				watcher.on('unlink', path => {
-					const moduleName = getModuleName(path)
-					if (include.includes(moduleName)) {
-						return
-					}
-					if (modules.has(moduleName)) {
-						modules.delete(moduleName)
-					}
-				})
-
-				watched = true
+			if (shouldAppend) {
+				modules.add(moduleName)
 			}
-		}
-	})
+		})
+
+		watcher.on('unlink', path => {
+			const moduleName = getModuleName(path)
+			if (include.includes(moduleName)) {
+				return
+			}
+			if (modules.has(moduleName)) {
+				modules.delete(moduleName)
+			}
+		})
+	}
 	return modules
 }
 

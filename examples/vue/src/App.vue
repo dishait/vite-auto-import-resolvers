@@ -3,6 +3,7 @@ console.log(useFoo)
 
 console.log(useBar)
 
+console.log(kk)
 const n = counterStore()
 </script>
 
