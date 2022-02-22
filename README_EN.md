@@ -260,7 +260,7 @@ export default defineConfig({
 })
 ```
 
-But sometimes you may need to change some dependencies, such as changing `Pinia` to `vuex`. At this time, if the configuration is not changed, an error will occur. At the same time, if you set an uninstalled package, it will cause unnecessary performance consumption.
+But sometimes you may need to change some dependencies, such as changing `pinia` to `vuex`. At this time, if the configuration is not changed, an error will occur. At the same time, if you set an uninstalled package, it will cause unnecessary performance consumption.
 
 So you can 👇
 
