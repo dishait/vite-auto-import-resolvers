@@ -41,7 +41,9 @@
   "license": "MIT",
   "dependencies": {
     "fast-glob": "^3.2.11",
-    "local-pkg": "^0.4.1"
+    "local-pkg": "^0.4.1",
+    "@types/node": "^17.0.19",
+    "unplugin-auto-import": "^0.5.11"
   },
   "devDependencies": {
     "@types/node": "^17.0.19",
