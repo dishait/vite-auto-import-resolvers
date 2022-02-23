@@ -1,5 +1,5 @@
 {
-  "version": "2.1.3",
+  "version": "2.1.4",
   "name": "vite-auto-import-resolvers",
   "description": "unplugin-auto-imports 的 vite resolver",
   "main": "./dist/index.js",
