@@ -1,42 +1,90 @@
 import { sync } from 'fast-glob'
-import { resolve } from 'path/posix'
-import { Plugin, FSWatcher } from 'vite'
-import { basename, extname } from 'path'
+import { Plugin, normalizePath } from 'vite'
 import type { Resolver } from 'unplugin-auto-import/types'
 
-let watcher: FSWatcher
-let inServer: boolean = false
+import {
+	basename,
+	extname,
+	dirname,
+	default as path
+} from 'path'
 
-export const DirResolverHelper = (): Plugin => {
-	return {
-		enforce: 'pre',
-		name: 'vite-auto-import-resolvers:dir-resolver-helper',
-		config(config, { command }) {
-			inServer = command === 'serve'
-		},
-		configureServer(server) {
-			watcher = server.watcher
-		}
-	}
+interface Effect {
+	(event: string, module: string): void
+}
+interface Effects {
+	[key: string]: Effect | undefined
 }
 
 interface IGenModulesOptions {
-	path: string
+	target: string
+	prefix: string
+	suffix: string
+	dirPath: string
+	include: string[]
+	exclude: string[]
+}
+
+interface Options {
+	srcAlias: string
+	target: string
 	prefix: string
 	suffix: string
 	include: string[]
 	exclude: string[]
 }
 
-const getModuleName = (path: string) => {
+let effects: Effects = Object.create(null)
+
+const trigger = (path: string, event: string) => {
+	const [_, targetFile] = normalizePath(path).split(/src\//)
+	const target = dirname(targetFile)
+	const effect = effects[target]
+
+	if (effect) {
+		const module = showModule(path)
+		effect(event, module)
+	}
+}
+
+const track = (target: string, effect: Effect) => {
+	effects[target] = effect
+}
+
+export const DirResolverHelper = (): Plugin => {
+	return {
+		enforce: 'pre',
+		name: 'vite-auto-import-resolvers:dir-resolver-helper',
+		configureServer({ watcher }) {
+			watcher.add(Object.keys(effects))
+
+			watcher.on('add', path => {
+				trigger(path, 'add')
+			})
+
+			watcher.on('unlink', path => {
+				trigger(path, 'unlink')
+			})
+		}
+	}
+}
+
+const showModule = (path: string) => {
 	return basename(path, extname(path))
 }
 
-const genModules = (options: IGenModulesOptions) => {
-	const { path, prefix, suffix, include, exclude } = options
+const generateModules = (options: IGenModulesOptions) => {
+	const {
+		target,
+		dirPath,
+		prefix,
+		suffix,
+		include,
+		exclude
+	} = options
 
-	const existedModulesInInit = sync(`${path}/**/*`).map(
-		getModuleName
+	const existedModulesInInit = sync(`${dirPath}/**/*`).map(
+		showModule
 	)
 
 	const modules = new Set<string>([
@@ -44,47 +92,35 @@ const genModules = (options: IGenModulesOptions) => {
 		...existedModulesInInit
 	])
 
-	if (inServer) {
-		watcher.add(path)
-		watcher.on('add', path => {
-			const moduleName = getModuleName(path)
-			const hasPrefix = moduleName.startsWith(prefix)
-			const hasSuffix = moduleName.endsWith(suffix)
+	track(target, (event: string, module: string) => {
+		console.log(module)
+		// add module
+		if (event === 'add') {
+			const hasPrefix = module.startsWith(prefix)
+			const hasSuffix = module.endsWith(suffix)
 
 			const shouldAppend =
-				hasPrefix &&
-				hasSuffix &&
-				!exclude.includes(moduleName)
+				hasPrefix && hasSuffix && !exclude.includes(module)
 
 			if (shouldAppend) {
-				modules.add(moduleName)
+				modules.add(module)
 			}
-		})
-
-		watcher.on('unlink', path => {
-			const moduleName = getModuleName(path)
-			if (include.includes(moduleName)) {
+		}
+		// remove module
+		if (event === 'unlink') {
+			if (include.includes(module)) {
 				return
 			}
-			if (modules.has(moduleName)) {
-				modules.delete(moduleName)
+			if (modules.has(module)) {
+				modules.delete(module)
 			}
-		})
-	}
+		}
+	})
 	return modules
 }
 
-interface Options {
-	srcAlias?: string
-	target?: string
-	prefix?: string
-	suffix?: string
-	include?: string[]
-	exclude?: string[]
-}
-
 export const dirResolver = (
-	options?: Options
+	options?: Partial<Options>
 ): Resolver => {
 	const {
 		srcAlias = '/src/',
@@ -95,16 +131,18 @@ export const dirResolver = (
 		exclude = []
 	} = options || {}
 
-	const modules = genModules({
-		path: `./src/${target}`,
+	const modules = generateModules({
+		target,
 		suffix,
 		prefix,
 		include,
-		exclude
+		exclude,
+		dirPath: `./src/${target}`
 	})
+
 	return name => {
 		if (modules.has(name)) {
-			return resolve(srcAlias, target, name)
+			return path.posix.resolve(srcAlias, target, name)
 		}
 	}
 }
