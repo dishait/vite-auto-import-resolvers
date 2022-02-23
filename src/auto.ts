@@ -1,5 +1,5 @@
 import { isPackageExists } from 'local-pkg'
-import { PresetName } from 'unplugin-auto-import/dist/types'
+import { PresetName } from 'unplugin-auto-import/types'
 
 interface Options {
 	/**

@@ -2,7 +2,7 @@ import { sync } from 'fast-glob'
 import { resolve } from 'path/posix'
 import { Plugin, FSWatcher } from 'vite'
 import { basename, extname } from 'path'
-import type { Resolver } from 'unplugin-auto-import/dist/types'
+import type { Resolver } from 'unplugin-auto-import/types'
 
 let watcher: FSWatcher
 let inServer: boolean = false
