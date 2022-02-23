@@ -93,7 +93,6 @@ const generateModules = (options: IGenModulesOptions) => {
 	])
 
 	track(target, (event: string, module: string) => {
-		console.log(module)
 		// add module
 		if (event === 'add') {
 			const hasPrefix = module.startsWith(prefix)
