@@ -22,5 +22,8 @@
     "vite": "^2.8.4",
     "vite-auto-import-resolvers": "workspace:*",
     "vue": "^3.2.29"
+  },
+  "dependencies": {
+    "vite-plugin-restart": "^0.1.1"
   }
 }

@@ -55,7 +55,6 @@ declare global {
   const toRefs: typeof import('vue')['toRefs']
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
-  const use: typeof import('/src/composables/use')['default']
   const useAttrs: typeof import('vue')['useAttrs']
   const useBar: typeof import('/src/composables/useBar')['default']
   const useCssModule: typeof import('vue')['useCssModule']

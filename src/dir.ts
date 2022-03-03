@@ -1,5 +1,6 @@
 import { sync } from 'fast-glob'
 import { Plugin, normalizePath } from 'vite'
+
 import type { Resolver } from 'unplugin-auto-import/types'
 
 import {
@@ -38,12 +39,15 @@ let effects: Effects = Object.create(null)
 
 const trigger = (path: string, event: string) => {
 	const [_, targetFile] = normalizePath(path).split(/src\//)
-	const target = dirname(targetFile)
-	const effect = effects[target]
 
-	if (effect) {
-		const module = showModule(path)
-		effect(event, module)
+	if (typeof targetFile === 'string') {
+		const target = dirname(targetFile)
+		const effect = effects[target]
+
+		if (effect) {
+			const module = showModule(path)
+			effect(event, module)
+		}
 	}
 }
 
