@@ -1,5 +1,5 @@
 import path from 'path'
-import { sync } from 'fast-glob'
+import fg from 'fast-glob'
 import type { Plugin } from 'vite'
 
 import { showModule } from './shared/base'
@@ -60,9 +60,9 @@ const generateModules = (options: IGenModulesOptions) => {
 		options
 
 	const scanDirInInit = path.posix.resolve(root, target)
-	const existedModulesInInit = sync(
-		`${scanDirInInit}/**/*`
-	).map(showModule)
+	const existedModulesInInit = fg
+		.sync(`${scanDirInInit}/**/*`)
+		.map(showModule)
 
 	const modules = new Set<string>([
 		...include,
