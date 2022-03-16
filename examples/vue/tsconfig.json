@@ -11,11 +11,7 @@
 		"lib": ["esnext", "dom"],
 		"resolveJsonModule": true,
 		"moduleResolution": "node",
-		"useDefineForClassFields": true,
-		"baseUrl": ".",
-		"paths": {
-			"/src/*": ["src/*"]
-		}
+		"useDefineForClassFields": true
 	},
 	"exclude": ["node_modules", "dist"]
 }

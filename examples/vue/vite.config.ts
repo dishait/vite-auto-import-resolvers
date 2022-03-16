@@ -6,18 +6,18 @@ import {
 	DirResolverHelper,
 	AutoGenerateImports
 } from 'vite-auto-import-resolvers'
-import restart from 'vite-plugin-restart'
 
 export default defineConfig({
 	plugins: [
-		restart({
-			restart: ['./foo/**/*']
-		}),
 		Vue(),
 		AutoImports({
 			imports: AutoGenerateImports(),
 			resolvers: [
 				dirResolver(),
+				dirResolver({
+					root: '.',
+					target: 'shared'
+				}),
 				dirResolver({
 					target: 'stores',
 					suffix: 'Store'

@@ -16,14 +16,11 @@
     "url": "https://github.com/markthree"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.1.0",
-    "pinia": "^2.0.11",
-    "unplugin-auto-import": "^0.6.1",
-    "vite": "^2.8.4",
+    "@vitejs/plugin-vue": "^2.2.4",
+    "pinia": "^2.0.12",
+    "unplugin-auto-import": "^0.6.6",
+    "vite": "^2.8.6",
     "vite-auto-import-resolvers": "workspace:*",
-    "vue": "^3.2.29"
-  },
-  "dependencies": {
-    "vite-plugin-restart": "^0.1.1"
+    "vue": "^3.2.31"
   }
 }

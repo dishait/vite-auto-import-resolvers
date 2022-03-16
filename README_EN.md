@@ -80,7 +80,7 @@ export default 100
 </template>
 ```
 
-4. Type configuration
+4. Type configuration (Abandoned, not required)
 
 If your project is `ts`, your `tsconfig.json` should have the following configuration 👇
 
@@ -190,7 +190,35 @@ export default defineConfig({
 <br />
 <br />
 
-### Other style path aliases
+### root
+
+```ts
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        DirResolverHelper(),
+        AutoImports({
+            imports: ['vue'],
+            resolvers: [
+                dirResolver({ 
+                    root: '.' // The default is 'src'
+                }) 
+            ]
+        })
+    ]
+})
+```
+
+<br />
+<br />
+
+### Other style path aliases (Abandoned, not required)
 
 You may use other styles of path aliases in your project，for example `@`
 

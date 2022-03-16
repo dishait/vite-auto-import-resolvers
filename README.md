@@ -79,7 +79,7 @@ export default 100
 </template>
 ```
 
-4. 类型配置
+4. 类型配置(已废弃，不需要)
 
 如果你的项目是 `ts` 的，那么你应该始终在 `tsconfig.json` 中保持以下配置 👇
 
@@ -188,7 +188,35 @@ export default defineConfig({
 <br />
 <br />
 
-### 其他风格路径别名
+### 根路径
+
+```ts
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
+import AutoImports from 'unplugin-auto-import/vite'
+import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
+
+export default defineConfig({
+    plugins: [
+        Vue(),
+        DirResolverHelper(),
+        AutoImports({
+            imports: ['vue'],
+            resolvers: [
+                dirResolver({ 
+                    root: '.' // 默认为 src
+                }) 
+            ]
+        })
+    ]
+})
+```
+
+<br />
+<br />
+
+### 其他风格路径别名 (已废弃，不需要)
 
 你可能在项目中用其他风格的路径别名，例如 `@`
 
