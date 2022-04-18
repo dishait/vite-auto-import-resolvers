@@ -1,12 +1,12 @@
 <script setup lang="ts">
-	console.log(useFoo)
+console.log(useFoo)
 
-	console.log(useBar)
+console.log(useBar)
 
-	const n = counterStore()
+const n = counterStore()
 
-	console.log(foo)
-	console.log(bar)
+console.log(foo)
+console.log(bar)
 </script>
 
 <template>
