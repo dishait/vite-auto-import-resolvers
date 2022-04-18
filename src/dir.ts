@@ -1,5 +1,6 @@
 import path from 'path'
 import fg from 'fast-glob'
+import { kebab } from 'case'
 import type { Plugin } from 'vite'
 
 import { showModule } from './shared/base'
@@ -41,7 +42,7 @@ export const DirResolverHelper = (): Plugin => {
 	return {
 		enforce: 'pre',
 		name: 'vite-auto-import-resolvers:dir-resolver-helper',
-		configureServer({ watcher, ws, moduleGraph }) {
+		configureServer({ watcher }) {
 			watcher.add(Object.keys(effects))
 
 			watcher.on('add', path => {
@@ -122,6 +123,10 @@ export const dirResolver = (
 	})
 
 	return name => {
+		if (modules.has(name)) {
+			return path.posix.resolve(root, target, name)
+		}
+		name = kebab(name)
 		if (modules.has(name)) {
 			return path.posix.resolve(root, target, name)
 		}

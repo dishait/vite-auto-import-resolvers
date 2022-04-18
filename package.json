@@ -1,67 +1,68 @@
 {
-  "version": "2.2.3",
-  "name": "vite-auto-import-resolvers",
-  "description": "unplugin-auto-imports 的 vite resolver",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "prepublishOnly": "npm run build",
-    "dev": "npm run build -- --watch",
-    "play": "pnpm -C examples/vue run dev",
-    "play:build": "pnpm -C examples/vue run build",
-    "release": "bumpp --commit --push --tag && npm publish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dishait/vite-auto-import-resolvers.git"
-  },
-  "keywords": [
-    "vue",
-    "vite",
-    "resolver",
-    "unplugin-auto-imports"
-  ],
-  "author": {
-    "name": "markthree",
-    "email": "1801982702@qq.com",
-    "url": "https://github.com/markthree"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "fast-glob": "^3.2.11",
-    "local-pkg": "^0.4.1"
-  },
-  "devDependencies": {
-    "@types/node": "^17.0.24",
-    "bumpp": "^7.1.1",
-    "tsup": "^5.12.5",
-    "typescript": "^4.6.3",
-    "unplugin-auto-import": "^0.6.9",
-    "vite": "^2.9.5"
-  },
-  "peerDependencies": {
-    "@types/node": ">=17.0.23",
-    "unplugin-auto-import": ">=0.6.9",
-    "vite": ">=2.9.1"
-  },
-  "peerDependenciesMeta": {
-    "@types/node": {
-      "optional": true
-    }
-  },
-  "engines": {
-    "node": ">=16"
-  }
+	"version": "2.2.3",
+	"name": "vite-auto-import-resolvers",
+	"description": "unplugin-auto-imports 的 vite resolver",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"require": "./dist/index.js",
+			"import": "./dist/index.mjs",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup",
+		"prepublishOnly": "npm run build",
+		"dev": "npm run build -- --watch",
+		"play": "pnpm -C examples/vue run dev",
+		"play:build": "pnpm -C examples/vue run build",
+		"release": "bumpp --commit --push --tag && npm publish"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dishait/vite-auto-import-resolvers.git"
+	},
+	"keywords": [
+		"vue",
+		"vite",
+		"resolver",
+		"unplugin-auto-imports"
+	],
+	"author": {
+		"name": "markthree",
+		"email": "1801982702@qq.com",
+		"url": "https://github.com/markthree"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"case": "^1.6.3",
+		"fast-glob": "^3.2.11",
+		"local-pkg": "^0.4.1"
+	},
+	"devDependencies": {
+		"@types/node": "^17.0.24",
+		"bumpp": "^7.1.1",
+		"tsup": "^5.12.5",
+		"typescript": "^4.6.3",
+		"unplugin-auto-import": "^0.6.9",
+		"vite": "^2.9.5"
+	},
+	"peerDependencies": {
+		"@types/node": ">=17.0.23",
+		"unplugin-auto-import": ">=0.6.9",
+		"vite": ">=2.9.1"
+	},
+	"peerDependenciesMeta": {
+		"@types/node": {
+			"optional": true
+		}
+	},
+	"engines": {
+		"node": ">=16"
+	}
 }

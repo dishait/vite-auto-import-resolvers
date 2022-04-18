@@ -7,6 +7,9 @@ const n = counterStore()
 
 console.log(foo)
 console.log(bar)
+
+console.log(useJack)
+console.log(useK)
 </script>
 
 <template>

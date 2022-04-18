@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@types/node': ^17.0.24
       bumpp: ^7.1.1
+      case: ^1.6.3
       fast-glob: ^3.2.11
       local-pkg: ^0.4.1
       tsup: ^5.12.5
@@ -13,6 +14,7 @@ importers:
       unplugin-auto-import: ^0.6.9
       vite: ^2.9.5
     dependencies:
+      case: 1.6.3
       fast-glob: 3.2.11
       local-pkg: 0.4.1
     devDependencies:
@@ -271,6 +273,11 @@ packages:
   /call-me-maybe/1.0.1:
     resolution: {integrity: sha1-JtII6onje1y95gJQoV8DHBak1ms=}
     dev: true
+
+  /case/1.6.3:
+    resolution: {integrity: sha512-mzDSXIPaFwVDvZAHqZ9VlbyF4yyXRuX6IvB06WvPYkqJVO24kX1PPhv9bfpKNFZyxYFmmgo03HUiD8iklmJYRQ==}
+    engines: {node: '>= 0.8.0'}
+    dev: false
 
   /chalk/4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
