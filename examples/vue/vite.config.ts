@@ -11,11 +11,12 @@ export default defineConfig({
 	plugins: [
 		Vue(),
 		AutoImports({
+			dts: 'src/auto-imports.d.ts',
 			imports: AutoGenerateImports(),
 			resolvers: [
 				dirResolver(),
 				dirResolver({
-					root: '.',
+					root: '..',
 					target: 'shared'
 				}),
 				dirResolver({

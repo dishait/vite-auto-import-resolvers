@@ -11,6 +11,7 @@ const { track, trigger, effects } = createEffects()
 
 interface IGenModulesOptions {
 	root: string
+	srcDir: string
 	target: string
 	prefix: string
 	suffix: string
@@ -20,9 +21,14 @@ interface IGenModulesOptions {
 
 interface Options {
 	/**
-	 * @default 'src'
+	 * Root directory starting from src
+	 * @default '.'
 	 */
 	root: string
+	/**
+	 * @default 'src'
+	 */
+	srcDir: string
 	/**
 	 * 该配置已废弃
 	 * The configuration is obsolete
@@ -57,10 +63,10 @@ export const DirResolverHelper = (): Plugin => {
 }
 
 const generateModules = (options: IGenModulesOptions) => {
-	const { root, target, prefix, suffix, include, exclude } =
+	const { root, srcDir, target, prefix, suffix, include, exclude } =
 		options
-
-	const scanDirInInit = path.posix.resolve(root, target)
+	
+	const scanDirInInit = path.posix.resolve(srcDir, root, target)
 	const existedModulesInInit = fg
 		.sync(`${scanDirInInit}/**/*`)
 		.map(showModule)
@@ -71,7 +77,7 @@ const generateModules = (options: IGenModulesOptions) => {
 	])
 
 	track(
-		path.resolve(root, target),
+		path.resolve(srcDir, root, target),
 		(event: string, module: string) => {
 			// add module
 			if (event === 'add') {
@@ -105,7 +111,8 @@ export const dirResolver = (
 	options?: Partial<Options>
 ): Resolver => {
 	const {
-		root = 'src',
+		root = '.',
+		srcDir = 'src',
 		target = 'composables',
 		suffix = '',
 		prefix = '',
@@ -115,6 +122,7 @@ export const dirResolver = (
 
 	const modules = generateModules({
 		root,
+		srcDir,
 		target,
 		suffix,
 		prefix,
@@ -124,11 +132,11 @@ export const dirResolver = (
 
 	return name => {
 		if (modules.has(name)) {
-			return path.posix.resolve(root, target, name)
+			return `${root}/${target}/${name}`
 		}
 		name = kebab(name)
 		if (modules.has(name)) {
-			return path.posix.resolve(root, target, name)
+			return `${root}/${target}/${name}`
 		}
 	}
 }

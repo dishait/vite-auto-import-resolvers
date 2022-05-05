@@ -51,6 +51,8 @@ export default defineConfig({
         // This helper is required 👇
         DirResolverHelper(),
         AutoImports({
+            // Set auto-imports.d.ts in your src directory
+            dts: 'src/auto-imports.d.ts',
             imports: ['vue'],
             resolvers: [
                 dirResolver()
