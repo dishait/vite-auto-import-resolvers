@@ -17,6 +17,10 @@ interface IGenModulesOptions {
 	exclude: string[]
 }
 
+interface Normalize {
+	(payload: { path: string, target: string, name: string  }): string
+}
+
 interface Options {
 	/**
 	 * @default 'src/composables'
@@ -26,6 +30,7 @@ interface Options {
 	suffix: string
 	include: string[]
 	exclude: string[]
+	normalize: Normalize
 }
 
 export const DirResolverHelper = (): Plugin => {
@@ -47,11 +52,11 @@ export const DirResolverHelper = (): Plugin => {
 }
 
 const generateModules = (options: IGenModulesOptions) => {
-	const {  target, prefix, suffix, include, exclude } =
+	const { target, prefix, suffix, include, exclude } =
 		options
 
 	const scanDirInInit = path.posix.resolve(target)
-	console.log(scanDirInInit)
+	
 	const existedModulesInInit = fg
 		.sync(`${scanDirInInit}/**/*`)
 		.map(showModule)
@@ -95,12 +100,13 @@ const generateModules = (options: IGenModulesOptions) => {
 export const dirResolver = (
 	options?: Partial<Options>
 ): Resolver => {
-	const {
+	let {
 		target = 'src/composables',
 		suffix = '',
 		prefix = '',
 		include = [],
-		exclude = []
+		exclude = [],
+		normalize
 	} = options || {}
 
 	const modules = generateModules({
@@ -111,13 +117,27 @@ export const dirResolver = (
 		exclude
 	})
 
+	if (typeof normalize !== 'function') {
+		normalize = ({ path }) => path
+	}
+
 	return name => {
 		if (modules.has(name)) {
-			return path.posix.resolve(target, name)
+			return normalize!({
+				name,
+				target,
+				path: path.posix.resolve(target, name),
+			})
 		}
+		
 		name = kebab(name)
+
 		if (modules.has(name)) {
-			return path.posix.resolve(target, name)
+			return normalize!({
+				name,
+				target,
+				path: path.posix.resolve(target, name),
+			})
 		}
 	}
 }
