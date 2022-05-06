@@ -10,8 +10,6 @@ import type { Resolver } from 'unplugin-auto-import/types'
 const { track, trigger, effects } = createEffects()
 
 interface IGenModulesOptions {
-	root: string
-	srcDir: string
 	target: string
 	prefix: string
 	suffix: string
@@ -19,29 +17,20 @@ interface IGenModulesOptions {
 	exclude: string[]
 }
 
+interface Normalize {
+	(payload: { path: string, target: string, name: string  }): string
+}
+
 interface Options {
 	/**
-	 * Root directory starting from src
-	 * @default '.'
-	 */
-	root: string
-	/**
-	 * @default 'src'
-	 */
-	srcDir: string
-	/**
-	 * 该配置已废弃
-	 * The configuration is obsolete
-	 */
-	srcAlias: string
-	/**
-	 * @default 'composables'
+	 * @default 'src/composables'
 	 */
 	target: string
 	prefix: string
 	suffix: string
 	include: string[]
 	exclude: string[]
+	normalize: Normalize
 }
 
 export const DirResolverHelper = (): Plugin => {
@@ -63,10 +52,11 @@ export const DirResolverHelper = (): Plugin => {
 }
 
 const generateModules = (options: IGenModulesOptions) => {
-	const { root, srcDir, target, prefix, suffix, include, exclude } =
+	const { target, prefix, suffix, include, exclude } =
 		options
+
+	const scanDirInInit = path.posix.resolve(target)
 	
-	const scanDirInInit = path.posix.resolve(srcDir, root, target)
 	const existedModulesInInit = fg
 		.sync(`${scanDirInInit}/**/*`)
 		.map(showModule)
@@ -77,7 +67,7 @@ const generateModules = (options: IGenModulesOptions) => {
 	])
 
 	track(
-		path.resolve(srcDir, root, target),
+		path.resolve(target),
 		(event: string, module: string) => {
 			// add module
 			if (event === 'add') {
@@ -110,19 +100,16 @@ const generateModules = (options: IGenModulesOptions) => {
 export const dirResolver = (
 	options?: Partial<Options>
 ): Resolver => {
-	const {
-		root = '.',
-		srcDir = 'src',
-		target = 'composables',
+	let {
+		target = 'src/composables',
 		suffix = '',
 		prefix = '',
 		include = [],
-		exclude = []
+		exclude = [],
+		normalize
 	} = options || {}
 
 	const modules = generateModules({
-		root,
-		srcDir,
 		target,
 		suffix,
 		prefix,
@@ -130,13 +117,27 @@ export const dirResolver = (
 		exclude
 	})
 
+	if (typeof normalize !== 'function') {
+		normalize = ({ path }) => path
+	}
+
 	return name => {
 		if (modules.has(name)) {
-			return `${root}/${target}/${name}`
+			return normalize!({
+				name,
+				target,
+				path: path.posix.resolve(target, name),
+			})
 		}
+		
 		name = kebab(name)
+
 		if (modules.has(name)) {
-			return `${root}/${target}/${name}`
+			return normalize!({
+				name,
+				target,
+				path: path.posix.resolve(target, name),
+			})
 		}
 	}
 }
