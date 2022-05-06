@@ -48,7 +48,6 @@ export default defineConfig({
         Vue(),
         // 该辅助插件也是必需的 👇
         DirResolverHelper(),
-        dts: 'src/auto-imports.d.ts',
         AutoImports({
             imports: ['vue'],
             resolvers: [
