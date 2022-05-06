@@ -15,11 +15,10 @@ export default defineConfig({
 			resolvers: [
 				dirResolver(),
 				dirResolver({
-					root: '.',
 					target: 'shared'
 				}),
 				dirResolver({
-					target: 'stores',
+					target: 'src/stores',
 					suffix: 'Store'
 				})
 			]

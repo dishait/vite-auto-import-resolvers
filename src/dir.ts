@@ -10,7 +10,6 @@ import type { Resolver } from 'unplugin-auto-import/types'
 const { track, trigger, effects } = createEffects()
 
 interface IGenModulesOptions {
-	root: string
 	target: string
 	prefix: string
 	suffix: string
@@ -20,16 +19,7 @@ interface IGenModulesOptions {
 
 interface Options {
 	/**
-	 * @default 'src'
-	 */
-	root: string
-	/**
-	 * 该配置已废弃
-	 * The configuration is obsolete
-	 */
-	srcAlias: string
-	/**
-	 * @default 'composables'
+	 * @default 'src/composables'
 	 */
 	target: string
 	prefix: string
@@ -57,10 +47,11 @@ export const DirResolverHelper = (): Plugin => {
 }
 
 const generateModules = (options: IGenModulesOptions) => {
-	const { root, target, prefix, suffix, include, exclude } =
+	const {  target, prefix, suffix, include, exclude } =
 		options
 
-	const scanDirInInit = path.posix.resolve(root, target)
+	const scanDirInInit = path.posix.resolve(target)
+	console.log(scanDirInInit)
 	const existedModulesInInit = fg
 		.sync(`${scanDirInInit}/**/*`)
 		.map(showModule)
@@ -71,7 +62,7 @@ const generateModules = (options: IGenModulesOptions) => {
 	])
 
 	track(
-		path.resolve(root, target),
+		path.resolve(target),
 		(event: string, module: string) => {
 			// add module
 			if (event === 'add') {
@@ -105,8 +96,7 @@ export const dirResolver = (
 	options?: Partial<Options>
 ): Resolver => {
 	const {
-		root = 'src',
-		target = 'composables',
+		target = 'src/composables',
 		suffix = '',
 		prefix = '',
 		include = [],
@@ -114,7 +104,6 @@ export const dirResolver = (
 	} = options || {}
 
 	const modules = generateModules({
-		root,
 		target,
 		suffix,
 		prefix,
@@ -124,11 +113,11 @@ export const dirResolver = (
 
 	return name => {
 		if (modules.has(name)) {
-			return path.posix.resolve(root, target, name)
+			return path.posix.resolve(target, name)
 		}
 		name = kebab(name)
 		if (modules.has(name)) {
-			return path.posix.resolve(root, target, name)
+			return path.posix.resolve(target, name)
 		}
 	}
 }
