@@ -4,7 +4,6 @@
 
 <br />
 
-
 ## README 🦉
 
 简体中文 | [English](./README_EN.md)
@@ -22,40 +21,33 @@
 ## 基本使用 🦖
 
 1. 安装
+
 ```shell
 npm i vite-auto-import-resolvers unplugin-auto-import -D
-
-# pnpm 👇
-# pnpm i vite-auto-import-resolvers unplugin-auto-import -D
-
-# yarn 👇
-# yarn add vite-auto-import-resolvers unplugin-auto-import -D
 ```
 
 2. 配置插件
 
 ```ts
 // vite.config.js
-// 或者 vite.config.ts
-
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
+import {
+	dirResolver,
+	DirResolverHelper
+} from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        // 该辅助插件也是必需的 👇
-        DirResolverHelper(),
-        dts: 'src/auto-imports.d.ts',
-        AutoImports({
-            imports: ['vue'],
-            resolvers: [
-                dirResolver()
-            ]
-        })
-    ]
+	plugins: [
+		Vue(),
+		// 该辅助插件也是必需的 👇
+		DirResolverHelper(),
+		AutoImports({
+			imports: ['vue'],
+			resolvers: [dirResolver()]
+		})
+	]
 })
 ```
 
@@ -72,57 +64,42 @@ export default 100
 ```html
 // src/App.vue
 <script setup>
-    console.log(foo) // 输出100，而且是按需自动引入的
+	console.log(foo) // 输出100，而且是按需自动引入的
 </script>
 
-<template>
-    Hello World!!
-</template>
-```
-
-4. 类型配置(已废弃，不需要)
-
-如果你的项目是 `ts` 的，那么你应该始终在 `tsconfig.json` 中保持以下配置 👇
-
-```json
-{
-    "compilerOptions": {
-        // 其他配置
-        "baseUrl": ".",
-        "paths": {
-            "/src/*": ["src/*"]
-        }
-    },
-    // 其他配置
-}
+<template> Hello World!! </template>
 ```
 
 <br />
 
 ## 进阶 🦕
+
 ### 强制前缀与后缀
 
 ```ts
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
+import {
+	dirResolver,
+	DirResolverHelper
+} from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        DirResolverHelper(),
-        AutoImports({
-            imports: ['vue'],
-            resolvers: [
-                dirResolver({ prefix: 'use' }), // 强制前缀为 use
-                dirResolver({
-                    target: 'stores', // 目标目录，默认为 composables
-                    suffix: 'Store' // 强制后缀为 Store
-                })
-            ]
-        })
-    ]
+	plugins: [
+		Vue(),
+		DirResolverHelper(),
+		AutoImports({
+			imports: ['vue'],
+			resolvers: [
+				dirResolver({ prefix: 'use' }), // 强制前缀为 use
+				dirResolver({
+					target: 'src/stores', // 目标目录，默认为 'src/composables'
+					suffix: 'Store' // 强制后缀为 Store
+				})
+			]
+		})
+	]
 })
 ```
 
@@ -138,22 +115,22 @@ export default defineConfig({
 const counter = ref(100)
 
 export default () => {
-    const inc = (v: number = 1) => (counter.value += v)
-    return {
-        inc,
-        counter
-    }
+	const inc = (v: number = 1) => (counter.value += v)
+	return {
+		inc,
+		counter
+	}
 }
 ```
 
 ```html
 <script setup lang="ts">
-    // 这将按需自动引入
-    const n = counterStore()
+	// 这将按需自动引入
+	const n = counterStore()
 </script>
 
 <template>
-    <div @click="n.inc()">{{n.counter}}</div>
+	<div @click="n.inc()">{{n.counter}}</div>
 </template>
 ```
 
@@ -166,108 +143,65 @@ export default () => {
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
+import {
+	dirResolver,
+	DirResolverHelper
+} from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        DirResolverHelper(),
-        AutoImports({
-            imports: ['vue'],
-            resolvers: [
-                dirResolver({ 
-                    prefix: 'use',
-                    include: ['foo'], // 即使 foo 模块不是以 use 开头也会被包含进来
-                    exclude: ['useBar'] // useBar 模块将始终被排除
-                }) 
-            ]
-        })
-    ]
+	plugins: [
+		Vue(),
+		DirResolverHelper(),
+		AutoImports({
+			imports: ['vue'],
+			resolvers: [
+				dirResolver({
+					prefix: 'use',
+					include: ['foo'], // 即使 foo 模块不是以 use 开头也会被包含进来
+					exclude: ['useBar'] // useBar 模块将始终被排除
+				})
+			]
+		})
+	]
 })
 ```
 
 <br />
 <br />
 
-### 根路径
+### 规范路径
+
+通过 `normalize` 可以控制最终路径的生成
 
 ```ts
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
+import {
+	dirResolver,
+	DirResolverHelper
+} from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        DirResolverHelper(),
-        AutoImports({
-            imports: ['vue'],
-            resolvers: [
-                dirResolver({ 
-                    root: '.' // 默认为 src
-                }) 
-            ]
-        })
-    ]
+	plugins: [
+		Vue(),
+		DirResolverHelper(),
+		AutoImports({
+			imports: ['vue'],
+			resolvers: [
+				dirResolver({
+					normalize({ path, target, name }) {
+						return path
+					}
+				})
+			]
+		})
+	]
 })
 ```
 
 <br />
 <br />
-
-### 其他风格路径别名 (已废弃，不需要)
-
-你可能在项目中用其他风格的路径别名，例如 `@`
-
-那么你可以这样配置 👇
-
-```ts
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import { dirResolver, DirResolverHelper } from 'vite-auto-import-resolvers'
-
-export default defineConfig({
-    resolve: {
-        alias: {
-            // 改变别名
-           '@/': `${resolve(__dirname, 'src')}/`
-        }
-    },
-    plugins: [
-        Vue(),
-        DirResolverHelper(),
-        AutoImports({
-            imports: ['vue'],
-            resolvers: [
-                dirResolver({ srcAlias: '@' }) // 设置别名，默认为 /src/
-            ]
-        })
-    ]
-})
-```
-
-如果你是 `ts` 的项目，`tsconfig.json` 理所当然也应该改 👇
-
-```json
-{
-    "compilerOptions": {
-        // 其他配置
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["src/*"]
-        }
-    },
-    // 其他配置
-}
-```
-
-<br />
-<br />
-
 
 ### 自动生成按需 `api` 预设
 
@@ -279,12 +213,12 @@ import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        AutoImports({
-            imports: ['vue', 'vue-router', 'pinia'] // 手动管理
-        })
-    ]
+	plugins: [
+		Vue(),
+		AutoImports({
+			imports: ['vue', 'vue-router', 'pinia'] // 手动管理
+		})
+	]
 })
 ```
 
@@ -296,15 +230,15 @@ export default defineConfig({
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { AutoGenerateImports } from "vite-auto-import-resolvers"
+import { AutoGenerateImports } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        AutoImports({
-          imports: AutoGenerateImports() // 自动管理，只有对应的包有装时才会自动按需设置预设
-        })
-    ]
+	plugins: [
+		Vue(),
+		AutoImports({
+			imports: AutoGenerateImports() // 自动管理，只有对应的包有装时才会自动按需设置预设
+		})
+	]
 })
 ```
 
@@ -347,20 +281,19 @@ export default defineConfig({
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import AutoImports from 'unplugin-auto-import/vite'
-import { AutoGenerateImports } from "vite-auto-import-resolvers"
+import { AutoGenerateImports } from 'vite-auto-import-resolvers'
 
 export default defineConfig({
-    plugins: [
-        Vue(),
-        AutoImports({
-          imports: AutoGenerateImports({
-              exclude: ['pinia'] // pinia 将始终被排除
-          }) 
-        })
-    ]
+	plugins: [
+		Vue(),
+		AutoImports({
+			imports: AutoGenerateImports({
+				exclude: ['pinia'] // pinia 将始终被排除
+			})
+		})
+	]
 })
 ```
-
 
 <br />
 <br />
@@ -368,7 +301,6 @@ export default defineConfig({
 ## 启发 🐳
 
 该 `resolvers` 来源于 `unplugin-auto-import` 的 `issue` 讨论 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
-
 
 <br />
 <br />
@@ -382,7 +314,7 @@ export default defineConfig({
 
 ## License 🐸
 
-Made with markthree
+Made with [markthree](https://github.com/markthree)
 
 Published under [MIT License](./LICENSE).
 
