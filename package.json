@@ -40,6 +40,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
+		"file-computed": "^0.2.1",
 		"local-pkg": "^0.4.2"
 	},
 	"devDependencies": {

@@ -21,7 +21,7 @@
     "pinia": "^2.0.23",
     "unplugin-auto-import": "^0.6.9",
     "vite": "^2.9.15",
-    "vite-auto-import-resolvers": "workspace:3.0.1",
+    "vite-auto-import-resolvers": "workspace:*",
     "vue": "^3.2.41"
   }
 }
