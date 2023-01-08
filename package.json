@@ -2,12 +2,12 @@
 	"version": "3.0.3",
 	"name": "vite-auto-import-resolvers",
 	"description": "unplugin-auto-imports 的 vite resolver",
-	"main": "./dist/index.js",
+	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"require": "./dist/index.js",
+			"require": "./dist/index.cjs",
 			"import": "./dist/index.mjs",
 			"types": "./dist/index.d.ts"
 		}
@@ -16,9 +16,10 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsup",
+		"build": "unbuild",
+		"dev": "pnpm run stub",
+		"stub": "unbuild --stub",
 		"prepublishOnly": "npm run build",
-		"dev": "npm run build -- --watch",
 		"play": "pnpm -C examples/vue run dev",
 		"play:build": "pnpm -C examples/vue run build",
 		"release": "bumpp --commit --push --tag && npm publish"
@@ -46,12 +47,12 @@
 	"devDependencies": {
 		"@types/node": "^17.0.45",
 		"bumpp": "^7.2.0",
-		"case": "^1.6.3",
-		"fast-glob": "^3.2.12",
-		"tsup": "^5.12.9",
 		"typescript": "^4.8.4",
+		"unbuild": "^1.0.2",
 		"unplugin-auto-import": "^0.6.9",
-		"vite": "^2.9.15"
+		"vite": "^2.9.15",
+		"case": "^1.6.3",
+		"fast-glob": "^3.2.12"
 	},
 	"peerDependencies": {
 		"@types/node": ">=17.0.23",
