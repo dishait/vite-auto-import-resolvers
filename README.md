@@ -1,3 +1,7 @@
+# 推荐
+
+[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) 已经内置 `dirs` 选项，推荐优先使用
+
 # vite-auto-import-resolvers
 
 [unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) 的 `vite resolvers`，主要处理 `vite` 项目本身的 `api` 按需自动引入。

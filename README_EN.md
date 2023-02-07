@@ -1,3 +1,7 @@
+# Recommend
+
+[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) The 'dirs' option has been built in. It is recommended to use it first
+
 # vite-auto-import-resolvers
 
 The vite resolvers of [unplugin-auto-import](<(https://github.com/antfu/unplugin-auto-import)>) mainly deals with the `API` of the `vite` project itself, which is automatically imported on demand.
