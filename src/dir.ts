@@ -1,6 +1,6 @@
 import path from 'path'
 import fg from 'fast-glob'
-import { kebab } from 'case'
+import { kebabCase } from 'scule'
 import type { Plugin } from 'vite'
 
 import { showModule } from './shared/base'
@@ -130,7 +130,7 @@ export const dirResolver = (
 			})
 		}
 		
-		name = kebab(name)
+		name = kebabCase(name)
 
 		if (modules.has(name)) {
 			return normalize!({
