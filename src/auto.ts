@@ -14,7 +14,7 @@ interface Options {
 
 export const AutoGenerateImports = (
   options?: Partial<Options>,
-) => {
+): Array<PresetName> => {
   const {
     include = [
       "ahooks",
@@ -58,10 +58,21 @@ export const AutoGenerateImports = (
     ],
     exclude = [],
   } = options || {};
-  return (include as string[]).filter((preset: any) => {
+  return include.filter((preset: any) => {
     if (exclude.includes(preset)) {
       return false;
     }
     return isPackageExists(preset);
   });
 };
+
+export const vue3Presets = [
+  'vue',
+  'vuex',
+  'pinia',
+  'vue-i18n',
+  'vue-router',
+  '@vueuse/core',
+  '@vueuse/head',
+  '@vueuse/math',
+] as const
