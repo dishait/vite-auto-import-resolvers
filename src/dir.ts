@@ -1,13 +1,14 @@
 import path from "path";
 import fg from "fast-glob";
 import { kebabCase } from "scule";
-import type { Plugin } from "vite";
 
-import { showModule } from "./shared/base";
-import { createEffects } from "./shared/effects";
+import { showModule } from "./utils";
+import { createHooks } from "./hooks";
+
+import type { Plugin } from "vite";
 import type { Resolver } from "unplugin-auto-import/types";
 
-const { track, trigger, effects } = createEffects();
+const { track, trigger, keys } = createHooks();
 
 interface IGenModulesOptions {
   target: string;
@@ -33,25 +34,7 @@ interface Options {
   normalize: Normalize;
 }
 
-export const DirResolverHelper = (): Plugin => {
-  return {
-    enforce: "pre",
-    name: "vite-auto-import-resolvers:dir-resolver-helper",
-    configureServer({ watcher }) {
-      watcher.add(Object.keys(effects));
-
-      watcher.on("add", (path) => {
-        trigger(path, "add");
-      });
-
-      watcher.on("unlink", (path) => {
-        trigger(path, "unlink");
-      });
-    },
-  };
-};
-
-const generateModules = (options: IGenModulesOptions) => {
+function generateModules(options: IGenModulesOptions) {
   const { target, prefix, suffix, include, exclude } = options;
 
   const scanDirInInit = path.posix.resolve(target);
@@ -60,14 +43,15 @@ const generateModules = (options: IGenModulesOptions) => {
     .sync(`${scanDirInInit}/**/*`)
     .map(showModule);
 
-  const modules = new Set<string>([
+  const modules = new Set([
     ...include,
     ...existedModulesInInit,
   ]);
 
   track(
     path.resolve(target),
-    (event: string, module: string) => {
+    // track module update logic
+    function (event: string, module: string) {
       // add module
       if (event === "add") {
         const hasPrefix = module.startsWith(prefix);
@@ -93,18 +77,22 @@ const generateModules = (options: IGenModulesOptions) => {
     },
   );
   return modules;
-};
+}
 
-export const dirResolver = (
+function defaultNormalize({ path }: Parameters<Normalize>[0]) {
+  return path;
+}
+
+export function dirResolver(
   options?: Partial<Options>,
-): Resolver => {
-  let {
+): Resolver {
+  const {
     target = "src/composables",
     suffix = "",
     prefix = "",
     include = [],
     exclude = [],
-    normalize,
+    normalize = defaultNormalize,
   } = options || {};
 
   const modules = generateModules({
@@ -115,11 +103,7 @@ export const dirResolver = (
     exclude,
   });
 
-  if (typeof normalize !== "function") {
-    normalize = ({ path }) => path;
-  }
-
-  return (name) => {
+  return function (name) {
     if (modules.has(name)) {
       return normalize!({
         name,
@@ -138,4 +122,22 @@ export const dirResolver = (
       });
     }
   };
-};
+}
+
+export function DirResolverHelper(): Plugin {
+  return {
+    enforce: "pre",
+    name: "vite-auto-import-resolvers:dir-resolver-helper",
+    configureServer({ watcher }) {
+      watcher.add(keys());
+
+      watcher.on("add", (path) => {
+        trigger(path, "add");
+      });
+
+      watcher.on("unlink", (path) => {
+        trigger(path, "unlink");
+      });
+    },
+  };
+}
