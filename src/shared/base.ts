@@ -1,5 +1,5 @@
-import { basename, extname } from 'path'
+import { basename, extname } from "path";
 
 export const showModule = (path: string) => {
-	return basename(path, extname(path))
-}
+  return basename(path, extname(path));
+};

@@ -1,5 +1,5 @@
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
-	failOnWarn: false
-})
+  failOnWarn: false,
+});

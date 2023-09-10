@@ -64,28 +64,26 @@ export const AutoGenerateImports = (
     }
     return isPackageExists(preset);
   });
-  if (presets.includes('vue') && presets.includes("vue-demi")) {
-    deleteArrayItem(presets, 'vue-demi')
+  if (presets.includes("vue") && presets.includes("vue-demi")) {
+    deleteArrayItem(presets, "vue-demi");
   }
-  return presets
+  return presets;
 };
 
-
 function deleteArrayItem<T = unknown>(arr: T[], item: T) {
-  const index = arr.findIndex(v => v === item)
+  const index = arr.findIndex((v) => v === item);
   if (index !== -1) {
-    arr.splice(index, 1)
+    arr.splice(index, 1);
   }
 }
 
-
 export const vue3Presets = [
-  'vue',
-  'vuex',
-  'pinia',
-  'vue-i18n',
-  'vue-router',
-  '@vueuse/core',
-  '@vueuse/head',
-  '@vueuse/math',
-] as const
+  "vue",
+  "vuex",
+  "pinia",
+  "vue-i18n",
+  "vue-router",
+  "@vueuse/core",
+  "@vueuse/head",
+  "@vueuse/math",
+] as const;

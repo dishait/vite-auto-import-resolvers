@@ -1,2 +1,2 @@
-export * from './dir'
-export * from './auto'
+export * from "./dir";
+export * from "./auto";

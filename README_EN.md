@@ -1,10 +1,14 @@
 # Recommend
 
-[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) The 'dirs' option has been built in. It is recommended to use it first
+[unplugin-auto-import](https://github.com/antfu/unplugin-auto-import) The 'dirs'
+option has been built in. It is recommended to use it first
 
 # vite-auto-import-resolvers
 
-The vite resolvers of [unplugin-auto-import](<(https://github.com/antfu/unplugin-auto-import)>) mainly deals with the `API` of the `vite` project itself, which is automatically imported on demand.
+The vite resolvers of
+[unplugin-auto-import]((https://github.com/antfu/unplugin-auto-import)) mainly
+deals with the `API` of the `vite` project itself, which is automatically
+imported on demand.
 
 <br />
 
@@ -17,7 +21,8 @@ The vite resolvers of [unplugin-auto-import](<(https://github.com/antfu/unplugin
 
 ## Motation 🐇
 
-In order to automatically import the `API` of modules in the specified directory on demand.
+In order to automatically import the `API` of modules in the specified directory
+on demand.
 
 <br />
 <br />
@@ -34,35 +39,33 @@ npm i vite-auto-import-resolvers unplugin-auto-import -D
 
 ```ts
 // vite.config.js
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import {
-	dirResolver,
-	DirResolverHelper
-} from 'vite-auto-import-resolvers'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
+import { dirResolver, DirResolverHelper } from "vite-auto-import-resolvers";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		// This helper is required 👇
-		DirResolverHelper(),
-		AutoImports({
-			imports: ['vue'],
-			resolvers: [dirResolver()]
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    // This helper is required 👇
+    DirResolverHelper(),
+    AutoImports({
+      imports: ["vue"],
+      resolvers: [dirResolver()],
+    }),
+  ],
+});
 ```
 
-3. After that, the default export of modules under `src/composables` will be automatically imported as needed in the project
+3. After that, the default export of modules under `src/composables` will be
+   automatically imported as needed in the project
 
 for example 👇
 
 ```ts
 // src/composables/foo.ts
 
-export default 100
+export default 100;
 ```
 
 ```html
@@ -81,30 +84,27 @@ export default 100
 ### Mandatory prefix or mandatory suffix
 
 ```ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import {
-	dirResolver,
-	DirResolverHelper
-} from 'vite-auto-import-resolvers'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
+import { dirResolver, DirResolverHelper } from "vite-auto-import-resolvers";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		DirResolverHelper(),
-		AutoImports({
-			imports: ['vue'],
-			resolvers: [
-				dirResolver({ prefix: 'use' }), // prefix use
-				dirResolver({
-					target: 'src/stores', // Target directory, The default is 'src/composables'
-					suffix: 'Store' // suffix Store
-				})
-			]
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    DirResolverHelper(),
+    AutoImports({
+      imports: ["vue"],
+      resolvers: [
+        dirResolver({ prefix: "use" }), // prefix use
+        dirResolver({
+          target: "src/stores", // Target directory, The default is 'src/composables'
+          suffix: "Store", // suffix Store
+        }),
+      ],
+    }),
+  ],
+});
 ```
 
 So
@@ -116,15 +116,15 @@ for example 👇
 
 ```ts
 // src/stores/counterStore.ts
-const counter = ref(100)
+const counter = ref(100);
 
 export default () => {
-	const inc = (v: number = 1) => (counter.value += v)
-	return {
-		inc,
-		counter
-	}
-}
+  const inc = (v: number = 1) => (counter.value += v);
+  return {
+    inc,
+    counter,
+  };
+};
 ```
 
 ```html
@@ -144,30 +144,27 @@ export default () => {
 ### include or exclude
 
 ```ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import {
-	dirResolver,
-	DirResolverHelper
-} from 'vite-auto-import-resolvers'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
+import { dirResolver, DirResolverHelper } from "vite-auto-import-resolvers";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		DirResolverHelper(),
-		AutoImports({
-			imports: ['vue'],
-			resolvers: [
-				dirResolver({
-					prefix: 'use',
-					include: ['foo'], // foo modules are included even if they do not start with use
-					exclude: ['useBar'] // The useBar module will always be excluded
-				})
-			]
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    DirResolverHelper(),
+    AutoImports({
+      imports: ["vue"],
+      resolvers: [
+        dirResolver({
+          prefix: "use",
+          include: ["foo"], // foo modules are included even if they do not start with use
+          exclude: ["useBar"], // The useBar module will always be excluded
+        }),
+      ],
+    }),
+  ],
+});
 ```
 
 <br />
@@ -178,30 +175,27 @@ export default defineConfig({
 use `normalize` to control the generation of the final path
 
 ```ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import {
-	dirResolver,
-	DirResolverHelper
-} from 'vite-auto-import-resolvers'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
+import { dirResolver, DirResolverHelper } from "vite-auto-import-resolvers";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		DirResolverHelper(),
-		AutoImports({
-			imports: ['vue'],
-			resolvers: [
-				dirResolver({
-					normalize({ path, target, name }) {
-						return path
-					}
-				})
-			]
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    DirResolverHelper(),
+    AutoImports({
+      imports: ["vue"],
+      resolvers: [
+        dirResolver({
+          normalize({ path, target, name }) {
+            return path;
+          },
+        }),
+      ],
+    }),
+  ],
+});
 ```
 
 <br />
@@ -212,38 +206,41 @@ export default defineConfig({
 When using `unplugin auto imports`, you need to manage `imports` manually 👇
 
 ```ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		AutoImports({
-			imports: ['vue', 'vue-router', 'pinia'] // Manual management required
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    AutoImports({
+      imports: ["vue", "vue-router", "pinia"], // Manual management required
+    }),
+  ],
+});
 ```
 
-But sometimes you may need to change some dependencies, such as changing `pinia` to `vuex`. At this time, if the configuration is not changed, an error will occur. At the same time, if you set an uninstalled package, it will cause unnecessary performance consumption.
+But sometimes you may need to change some dependencies, such as changing `pinia`
+to `vuex`. At this time, if the configuration is not changed, an error will
+occur. At the same time, if you set an uninstalled package, it will cause
+unnecessary performance consumption.
 
 So you can 👇
 
 ```ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import { AutoGenerateImports } from 'vite-auto-import-resolvers'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
+import { AutoGenerateImports } from "vite-auto-import-resolvers";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		AutoImports({
-			imports: AutoGenerateImports() // Automatic management. Only when the corresponding package is loaded, the preset will be set automatically on demand
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    AutoImports({
+      imports: AutoGenerateImports(), // Automatic management. Only when the corresponding package is loaded, the preset will be set automatically on demand
+    }),
+  ],
+});
 ```
 
 <br />
@@ -280,21 +277,21 @@ export default defineConfig({
 #### exclude
 
 ```ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import AutoImports from 'unplugin-auto-import/vite'
-import { AutoGenerateImports } from 'vite-auto-import-resolvers'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import AutoImports from "unplugin-auto-import/vite";
+import { AutoGenerateImports } from "vite-auto-import-resolvers";
 
 export default defineConfig({
-	plugins: [
-		Vue(),
-		AutoImports({
-			imports: AutoGenerateImports({
-				exclude: ['pinia'] // Pinia will always be excluded
-			})
-		})
-	]
-})
+  plugins: [
+    Vue(),
+    AutoImports({
+      imports: AutoGenerateImports({
+        exclude: ["pinia"], // Pinia will always be excluded
+      }),
+    }),
+  ],
+});
 ```
 
 <br />
@@ -302,14 +299,16 @@ export default defineConfig({
 
 ## Inspire 🐳
 
-The `resolvers` comes from the `issue` discussion of `unplugin-auto-import` 👉 [How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
+The `resolvers` comes from the `issue` discussion of `unplugin-auto-import` 👉
+[How should I auto import composition functions](https://github.com/antfu/unplugin-auto-import/issues/76)。
 
 <br />
 <br />
 
 ## More 🐃
 
-More project engineering practices，you can be see 👉 [tov-template](https://github.com/dishait/tov-template)
+More project engineering practices，you can be see 👉
+[tov-template](https://github.com/dishait/tov-template)
 
 <br />
 <br />
