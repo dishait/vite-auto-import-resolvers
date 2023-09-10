@@ -26,7 +26,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/dishait/vite-auto-import-resolvers.git"
+		"url": "git+https://github.com/dishait/vite-auto-import-resolvers.git"
 	},
 	"keywords": [
 		"vue",
