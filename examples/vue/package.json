@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
     "build": "vite build"
   },
   "keywords": [
@@ -17,11 +17,11 @@
     "url": "https://github.com/markthree"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^2.3.4",
-    "pinia": "^2.0.23",
-    "unplugin-auto-import": "^0.6.9",
-    "vite": "^2.9.15",
+    "@vitejs/plugin-vue": "^4.3.4",
+    "pinia": "^2.1.6",
+    "unplugin-auto-import": "^0.16.6",
+    "vite": "^4.4.9",
     "vite-auto-import-resolvers": "workspace:*",
-    "vue": "^3.2.41"
+    "vue": "^3.3.4"
   }
 }
