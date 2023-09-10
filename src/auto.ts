@@ -58,13 +58,26 @@ export const AutoGenerateImports = (
     ],
     exclude = [],
   } = options || {};
-  return include.filter((preset: any) => {
+  const presets = include.filter((preset: any) => {
     if (exclude.includes(preset)) {
       return false;
     }
     return isPackageExists(preset);
   });
+  if (presets.includes('vue') && presets.includes("vue-demi")) {
+    deleteArrayItem(presets, 'vue-demi')
+  }
+  return presets
 };
+
+
+function deleteArrayItem<T = unknown>(arr: T[], item: T) {
+  const index = arr.findIndex(v => v === item)
+  if (index !== -1) {
+    arr.splice(index, 1)
+  }
+}
+
 
 export const vue3Presets = [
   'vue',
